@@ -34,21 +34,20 @@ app.get('/', function(req, res){
   res.render('index');
 });
 
+const query = "select charge_description, activity_date, block_address, community, zip " +
+              "from cogs121_16_raw.arjis_crimes "+
+              "where zip IS NOT NULL AND community IS NOT NULL AND " +
+              "NULLIF(zip, '') IS NOT NULL AND NULLIF(community, '') IS NOT NULL AND " +
+              "community NOT LIKE 'UNKNOWN' limit 10000;"; 
+
 app.get('/delphidata', function (req, res) {
-  // TODO
-  // Connect to the DELPHI Database and return the proper information
-  // that will be displayed on the D3 visualization
-  // Table: Smoking Prevalance in Adults
-  // Task: In the year 2003, retrieve the total number of respondents
-  // for each gender. 
-  // Display that data using D3 with gender on the x-axis and 
-  // total respondents on the y-axis.
   var client = new pg.Client(conString);
+  var data = [];
   client.connect(function(err) {
     if(err) {
       return console.error('could not connect to postgres', err);
     }
-    client.query('select * from cogs121_16_raw.cdph_smoking_prevalence_in_adults_1984_2013 where year = 2003 order by number_of_respondents ASC;', function(err, result) {
+    client.query(query, function(err, result) {
       if(err) {
         return console.error('error running query', err);
       }
