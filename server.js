@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var dotenv = require('dotenv');
 var pg = require('pg');
+var Promise = require('bluebird');
 var app = express();
 
 //client id and client secret here, taken from .env (which you need to create)
@@ -38,7 +39,48 @@ const query = "select charge_description, activity_date, block_address, communit
               "from cogs121_16_raw.arjis_crimes "+
               "where zip IS NOT NULL AND community IS NOT NULL AND " +
               "NULLIF(zip, '') IS NOT NULL AND NULLIF(community, '') IS NOT NULL AND " +
-              "community NOT LIKE 'UNKNOWN' limit 10000;"; 
+              "community NOT LIKE 'UNKNOWN' limit 10;"; 
+
+function fixAddr(addr){
+  return addr.split('BLOCK').join('').split(' ').join('%20');
+}
+
+function getGeoData(count, result, data){
+  return new Promise(function(resolve, reject){
+      console.log(count);
+      var dataRow = result.rows[count];
+        dataRow.community = result.rows[count].community.split('BLOCK').join('');
+        dataRow.block_address = result.rows[count].block_address.split('BLOCK').join('');
+        const url = "http://nominatim.openstreetmap.org/search?format=json"+
+                    "&state=CA&city="+fixAddr(dataRow.community)+
+                    "&street="+fixAddr(dataRow.block_address)+
+                    "&zip="+dataRow.zip;
+      http.get(url, function (http_res) {
+        // initialize the container for our data
+        var rawData = "";
+
+        // this event fires many times, each time collecting another piece of the response
+        http_res.on("data", function (chunk) {
+            // append this chunk to our growing `data` var
+            rawData += chunk;
+        });
+
+        // this event fires *one* time, after all the `data` events/chunks have been gathered
+        http_res.on("end", function () {
+            // you can use res.send instead of console.log to output via express
+            var tmp = JSON.parse(rawData);
+            if(tmp.length != 0){
+              dataRow['lat'] = tmp[0].lat;
+              dataRow['lon'] = tmp[0].lon;
+              data.push(dataRow);
+              resolve(data);
+            }else{
+              resolve(tmp);
+            }
+        });
+      });
+  });
+}
 
 app.get('/delphidata', function (req, res) {
   var client = new pg.Client(conString);
@@ -52,10 +94,23 @@ app.get('/delphidata', function (req, res) {
         return console.error('error running query', err);
       }
       client.end();
-      return res.json(result.rows);
+      console.log("done");
+
+      var promiseFor = Promise.method(function(condition, action, value) {
+          if (!condition(value)) return value;
+          return action(value).then(promiseFor.bind(null, condition, action));
+      });
+
+      promiseFor(function(count) {
+          return count < result.rows.length;
+      }, function(count) {
+        return (function(countHolder){
+          return getGeoData(count, result, data);
+        })().then(function() {return ++count;} );
+      }, 0).then(function() {return res.json(data); } );
     });
   });
-  // return { delphidata: "No data present." }
+
 });
 
 
