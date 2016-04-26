@@ -22,3 +22,22 @@
 	font-family: sans-serif;
 	font-size: 11px;
 }
+
+#map{
+
+  width: 95%;
+  height: 800px;
+  margin-right: 0px;
+}
+
+#coordinates{
+  font-size: 20px;
+  color: red;
+  position: absolute;
+  left: 10px;
+  top: 150px;
+}
+
+#something{
+  text-align: center;
+}
