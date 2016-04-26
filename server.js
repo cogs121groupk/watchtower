@@ -39,7 +39,7 @@ const query = "select charge_description, activity_date, block_address, communit
               "from cogs121_16_raw.arjis_crimes "+
               "where zip IS NOT NULL AND community IS NOT NULL AND " +
               "NULLIF(zip, '') IS NOT NULL AND NULLIF(community, '') IS NOT NULL AND " +
-              "community NOT LIKE 'UNKNOWN' limit 1000;"; 
+              "community NOT LIKE 'UNKNOWN' limit 200;"; 
 
 function fixAddr(addr){
   return addr.split('BLOCK').join('').split(' ').join('%20');
@@ -47,12 +47,19 @@ function fixAddr(addr){
 
 function getGeoData(count, result, data){
   return new Promise(function(resolve, reject){
-      var dataRow = result.rows[count];
-      dataRow.community = result.rows[count].community.split('BLOCK').join('');
-      dataRow.block_address = result.rows[count].block_address.split('BLOCK').join('');
+      var dataRow = {};
+      // var date = new Date(result.rows[count].activity_date);
+      // dataRow.day = date.getDay(); // 0-6: sun. - sat.
+      // dataRow.date = date.getDate();
+      // dataRow.month = date.getMonth()+1;
+      // dataRow.year = date.getFullYear();
+      // dataRow.hour = date.getHours();
+      // dataRow.minute = date.getMinutes();
+      dataRow.activity_date = result.rows[count].activity_date;
+      dataRow.charge_description = result.rows[count].charge_description;
       const url = "http://nominatim.openstreetmap.org/search?format=json"+
-                  "&state=CA&city="+fixAddr(dataRow.community)+
-                  "&street="+fixAddr(dataRow.block_address)+
+                  "&state=CA&city="+fixAddr(result.rows[count].community)+
+                  "&street="+fixAddr(result.rows[count].block_address)+
                   "&zip="+dataRow.zip;
       http.get(url, function (http_res) {
         // initialize the container for our data
@@ -97,7 +104,7 @@ app.get('/delphidata', function (req, res) {
       console.log("done");
 
       var promises = [];
-      for(var i=0; i<result.rows.length/2; i++){
+      for(var i=0; i<result.rows.length; i++){
         promises.push(getGeoData(i,result,data));
       }
 
