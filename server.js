@@ -114,7 +114,6 @@ app.get('/delphidata', function (req, res) {
 
     });
   });
-
 });
 
 
