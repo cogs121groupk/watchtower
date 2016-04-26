@@ -88,56 +88,7 @@
           return;
       }
       console.log("Data", data);
-      // Define the chart
-      var xScale = d3.scale.ordinal().rangeRoundBands([0, width], 0.1);
-      var yScale = d3.scale.linear().range([height, 0]);
-
-      var chart = d3
-                    .select(".chart2")
-                    .append("svg")
-                    .attr("width", width + margin.right + margin.left)
-                    .attr("height", height + margin.top + margin.bottom)
-                    .append("g")
-                    .attr("transform", "translate(" +  margin.left + "," + margin.right + ")");
-
-      // Render the chart
-      xScale.domain(data.map(function (d){ return d.gender; }));
-
-      // TODO: Fix the yScale domain to scale with any ratings range
-      yScale.domain([0, d3.max(data, function(d) { return d.number_of_respondents; })]);
-
-      chart
-        .selectAll(".bar")
-        .data(data)
-        .enter().append("rect")
-        .attr("class", "bar")
-        .attr("x", function(d, i) { return xScale(d.gender); })
-        .attr("width", xScale.rangeBand())
-        .attr("y", function(d) { return yScale(d.number_of_respondents); })
-        .attr("height", function(d) { return height - yScale(d.number_of_respondents); });
-
-      // Orient the x and y axis
-      var xAxis = d3.svg.axis().scale(xScale).orient("bottom");
-      var yAxis = d3.svg.axis().scale(yScale).orient("left");
-
-      // TODO: Append X axis
-      chart
-        .append("g")
-        .attr("class", "xaxis axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(xAxis);
-
-
-      // TODO: Append Y axis
-      chart
-        .append("g")
-        .call(yAxis);
-
-      chart
-      .selectAll(".xaxis text")  // select all the text elements for the xaxis
-      .attr("transform", function(d) {
-         return "translate(" + this.getBBox().height*-2 + "," + (this.getBBox().height*2) + ")rotate(-45)";
-      });
+      
   });
 
   
