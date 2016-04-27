@@ -82,13 +82,24 @@
 
   // ASSIGNMENT PART 1B
   // Grab the delphi data from the server
-  d3.json("/delphidata", function(err, data) {
+  d3.json("/getAllCrimeData", function(err, data) {
       if (err) {
           console.log(err);
           return;
       }
       console.log("Data", data);
       
+  });
+
+  //Get request to update map
+  var time = 1;
+
+  $.get("/getTimeCrimeData?time="+time, function(err, data){
+      if (err) {
+          console.log(err);
+          return;
+      }
+      console.log("Data", data);
   });
 
   
