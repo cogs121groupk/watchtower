@@ -7,13 +7,18 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var dotenv = require('dotenv');
 var pg = require('pg');
+var Promise = require('bluebird');
 var app = express();
 
 //client id and client secret here, taken from .env (which you need to create)
 dotenv.load();
 
 //connect to database
-var conString = process.env.DATABASE_CONNECTION_URL;
+// var conString = process.env.DATABASE_CONNECTION_URL;
+
+var router = { 
+    index: require("./routes/index")
+};
 
 //Configures the Template engine
 app.engine('html', handlebars({ defaultLayout: 'layout', extname: '.html' }));
@@ -30,34 +35,9 @@ app.use(session({ secret: 'keyboard cat',
 app.set('port', process.env.PORT || 3000);
 
 //routes
-app.get('/', function(req, res){
-  res.render('index');
-});
-
-app.get('/delphidata', function (req, res) {
-  // TODO
-  // Connect to the DELPHI Database and return the proper information
-  // that will be displayed on the D3 visualization
-  // Table: Smoking Prevalance in Adults
-  // Task: In the year 2003, retrieve the total number of respondents
-  // for each gender. 
-  // Display that data using D3 with gender on the x-axis and 
-  // total respondents on the y-axis.
-  var client = new pg.Client(conString);
-  client.connect(function(err) {
-    if(err) {
-      return console.error('could not connect to postgres', err);
-    }
-    client.query('select * from cogs121_16_raw.cdph_smoking_prevalence_in_adults_1984_2013 where year = 2003 order by number_of_respondents ASC;', function(err, result) {
-      if(err) {
-        return console.error('error running query', err);
-      }
-      client.end();
-      return res.json(result.rows);
-    });
-  });
-  // return { delphidata: "No data present." }
-});
+app.get('/', router.index.view);
+app.get('/getAllCrimeData', router.index.getAllCrimeData);
+app.get('/getTimeCrimeData', router.index.getTimeCrimeData);
 
 
 http.createServer(app).listen(app.get('port'), function() {
