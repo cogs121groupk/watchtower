@@ -36,9 +36,7 @@ app.set('port', process.env.PORT || 3000);
 
 //routes
 app.get('/', router.index.view);
-
 app.get('/getAllCrimeData', router.index.getAllCrimeData);
-
 app.get('/getTimeCrimeData', router.index.getTimeCrimeData);
 
 
