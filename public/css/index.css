@@ -1,7 +1,36 @@
-.chart {
+body {
+  background-color: #222831;
+  color: #EEEEEE;
+}
+
+h1 {
+  color: #00ADB5;
+  font-family: 'Lato', sans-serif;
+  font-weight: bold;
+}
+
+h2 {
+  color: #00ADB5;
+  font-family: 'Lato', sans-serif;
+  font-weight: bold;
+}
+
+.axis {
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.8em;
+  stroke: none;
+  fill: #EEEEEE;
+}
+
+#stackBarChart {
   display: block;
   margin-left: auto;
   margin-right: auto;
+}
+
+#stackBarChart #hoverText {
+  font-family: 'Roboto', sans-serif;
+  fill: #EEEEEE;
 }
 
 .chart2 {
@@ -12,15 +41,6 @@
 
 .chart2 rect {
   fill: steelblue;
-}
-
-.chart rect {
-  fill: steelblue;
-}
-
-.axis text {
-	font-family: 'Roboto', sans-serif;
-  font-size: 0.9em;
 }
 
 #map{

@@ -23,8 +23,8 @@
   // Defining the margins and chart size
   var margin = {top: 20, right: 10, bottom: 100, left: 60},
       width = 960 - margin.right - margin.left,
-      height = 500 - margin.top - margin.bottom,
-      that = this;
+      height = 500 - margin.top - margin.bottom;
+      // that = this;
 
   var innerWidth  = width  - margin.left - margin.right;
   var innerHeight = height - margin.top  - margin.bottom;
@@ -32,13 +32,13 @@
   // TODO: Input the proper values for the scales
   var xScale = d3.scale.ordinal().rangeRoundBands([0, width], 0.2);
   var yScale = d3.scale.linear().range([height, 0]);
-  var color = d3.scale.ordinal()
-    .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
-  // var color = d3.scale.category20(); // Preset category of colors
+  // var color = d3.scale.ordinal()
+    // .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+  var color = d3.scale.category20(); // Preset category of colors
 
   // Define the chart
-  var chart = d3
-    .select(".chart")
+  var stackBarChart = d3
+    .select("#stackBarChart")
     .append("svg")
     .attr("width", width + margin.right + margin.left)
     .attr("height", height + margin.top + margin.bottom)
@@ -83,26 +83,28 @@
   // TODO:
   // 1. Consume the taco data
   // 2. Update the x, y, width, and height attributes to appropriate reflect this
-  chart
+  stackBarChart
     .selectAll(".bar")
     .data(data)
     .enter().append("rect")
     .attr("class", "bar")
     .attr("x", function(d, i) { return xScale(d.name); })
     .attr("width", xScale.rangeBand())
-    .attr("y", function(d) { return yScale(d.total); }) // d.total
-    .attr("height", function(d) { return height - yScale(d.total); }); // d.total
+    .attr("y", function(d) { return yScale(d.total); })
+    .attr("height", function(d) { return height - yScale(d.total); });
     
   // Orient the x and y axis
   var xAxis = d3.svg.axis().scale(xScale).orient("bottom");
   var yAxis = d3.svg.axis().scale(yScale).orient("left");
 
   // TODO: Append X axis
-  chart
+  stackBarChart
     .append("g")
     .attr("class", "xaxis axis")
     .attr("transform", "translate(0," + height + ")")
     .call(xAxis)
+        // .attr("stroke", "#EEEEEE")
+        // .attr("fill", "#EEEEEE")
     .selectAll(".xaxis text") // To rotate axis text
         .style("text-anchor", "end")
         .attr("dx", "-1em")
@@ -110,11 +112,14 @@
         .attr("transform", "rotate(-65)");
 
   // TODO: Append Y axis
-  chart
+  stackBarChart
     .append("g")
+    .attr("class", "yaxis axis")
     .call(yAxis);
+        // .attr("stroke","#EEEEEE")
+        // .attr("fill", "#EEEEEE");
 
-  var name = chart.selectAll(".name")
+  var name = stackBarChart.selectAll(".name")
     .data(data)
     .enter().append("g")
     .attr("class", "name")
@@ -135,24 +140,25 @@
         var total_amt = d.y1 - d.y0;
         console.log('----');
 
-        // dynamicColor = this.style.fill;
+        dynamicColor = this.style.fill;
         d3.select(this)
-          .style("opacity", "0.3");
+          .style("fill-opacity", "0.1")
+          .style("fill", "#EEEEEE");
           // .append("title")
           // .html(total_amt);
           // .html('Amount: <strong>$' + that.numberWithCommas(total_amt.toFixed(2)) + '</strong>');
-        chart
+        stackBarChart
           .append("text")
           .attr("id", "hoverText")
           .attr("x", width/2)
           .attr("y", height/5)
-          .text(function(d) { return total_amt; });
+          .text(function(d) { return total_amt; })
       })
     .on("mouseout", function(d) {
         d3.select(this)
-          // .style('fill', dynamicColor)
-          .style("opacity", "1");
-        chart
+          .style("fill", dynamicColor)
+          .style("fill-opacity", "1");
+        stackBarChart
           .select("#hoverText").remove();
     });
 
