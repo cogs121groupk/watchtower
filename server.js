@@ -34,11 +34,19 @@ app.use(session({ secret: 'keyboard cat',
 //set environment ports and start application
 app.set('port', process.env.PORT || 3000);
 
+const query = "select charge_description, activity_date, block_address, community, zip " +
+              "from cogs121_16_raw.arjis_crimes "+
+              "where zip IS NOT NULL AND community IS NOT NULL AND charge_description IS NOT NULL AND " +
+              "NULLIF(zip, '') IS NOT NULL AND NULLIF(community, '') IS NOT NULL AND NULLIF(charge_description, '') IS NOT NULL AND" +
+              "community NOT LIKE 'UNKNOWN' LIMIT 10000;"; 
+//store altered data in json due to limitation on calling map apis for lat longitude data
+//above is query used in delphi
+
 //routes
 app.get('/', router.index.view);
 app.get('/getAllCrimeData', router.index.getAllCrimeData);
 app.get('/getTimeCrimeData', router.index.getTimeCrimeData);
-
+app.get('/getTimeTypeCrimeData', router.index.getTimeTypeCrimeData);
 
 http.createServer(app).listen(app.get('port'), function() {
     console.log('Express server listening on port ' + app.get('port'));

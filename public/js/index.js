@@ -264,9 +264,9 @@
       //   }
 
   //Get request to update map
-  var time = 1;
+  var time = 18;
 
-  $.get("/getTimeCrimeData?time="+time, function(err, data){
+  $.get("/getTimeTypeCrimeData?time="+time, function(err, data){
       if (err) {
           console.log(err);
           return;
