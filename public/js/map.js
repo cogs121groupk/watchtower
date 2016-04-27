@@ -5,7 +5,7 @@ var map = L.mapbox.map('map', 'mapbox.streets');
 
 var myLayer = new L.MarkerClusterGroup();
 
-var myLayer0 = new L.MarkerClusterGroup();
+//var myLayer0 = new L.MarkerClusterGroup();
 
 var features = [];
 
@@ -14,6 +14,8 @@ var activeLayer = myLayer;
 var features = [];
 
 var features0 = [];
+
+/*
 
 //loop through the DELPHI data, pushing feature objects into the array
 for (var x = -120; x < 120; x += 20) {
@@ -40,7 +42,9 @@ for (var x = -100; x < 140; x += 6) {
     }
 }
 
-map.addLayer(myLayer);
+*/
+
+//map.addLayer(myLayer);
 
 
 map.on('move', function() {
@@ -67,6 +71,24 @@ var times = ["12am","1am","2am","3am","4am","5am","6am","7am","8am","9am","10am"
 
 $("#something").text(times[0]);
 
+//get initial (midnight) crime data
+$.get("/getTimeCrimeData?time=0", function(response){
+
+    for(var i = 0; i < response.length; i++){
+
+        var marker = L.marker(new L.LatLng(response[i].lat, response[i].lng), {
+
+            icon: L.mapbox.marker.icon({'marker-symbol': 'post', 'marker-color': '0044FF'}),
+            title: response[i].charge_description
+        });
+
+        marker.bindPopup([response[i].lat, response[i].lng].join(','));
+        myLayer.addLayer(marker);
+    }
+
+    map.addLayer(myLayer);
+});
+
 $("#slider").slider({
 
     min: 0,
@@ -77,7 +99,33 @@ $("#slider").slider({
     slide: function(event, ui){
 
         //switch the active layer when slider slides
-        $("#something").text(times[ui.value]);  
+        $("#something").text(times[ui.value]); 
+
+        myLayer.eachLayer(function(marker) {
+            myLayer.removeLayer(marker);
+        });
+
+        $.get("/getTimeCrimeData?time="+ui.value, function(response){
+
+            for(var i = 0; i < response.length; i++){
+
+                var marker = L.marker(new L.LatLng(response[i].lat, response[i].lng), {
+
+                    icon: L.mapbox.marker.icon({'marker-symbol': 'post', 'marker-color': '0044FF'}),
+                    title: response[i].charge_description
+                });
+
+                marker.bindPopup([response[i].lat, response[i].lng].join(','));
+                myLayer.addLayer(marker);
+            }
+
+            map.addLayer(myLayer);
+        });
+
+        map.addLayer(myLayer);
+
+        /*
+
         if(ui.value % 2 == 0){
            map.removeLayer(myLayer0);
            map.addLayer(myLayer);
@@ -89,6 +137,7 @@ $("#slider").slider({
             activeLayer = myLayer0;
         }
 
+    */
         // Construct an empty list to fill with onscreen markers.
         var inBounds = [],
         // Get the map bounds - the top-left and bottom-right locations.
