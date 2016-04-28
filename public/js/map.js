@@ -9,6 +9,7 @@ var southWest = L.latLng(32.476625, -117.700736),
 var map = L.mapbox.map('map', 'mapbox.streets', {
 
    maxBounds: bounds,
+   scrollWheelZoom: false,
    maxZoom: 20,
    minZoom: 9
 });
@@ -40,6 +41,10 @@ var crimes = {};
 var crimes2 = [];
 
 var pie;
+
+map.once('focus', function(){
+    map.scrollWheelZoom.enable();
+});
 
 //get initial (midnight) crime data
 $.get("/getTimeCrimeData?time=0", function(response){
@@ -134,9 +139,9 @@ $.get("/getTimeCrimeData?time=0", function(response){
 
         "size": {
 
-          "canvasHeight": 500,
+          "canvasHeight": 475,
 
-          "canvasWidth":500
+          "canvasWidth":475
 
         },
 
