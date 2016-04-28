@@ -191,24 +191,32 @@
 
   // MAP STUFF
 
-  d3.json("/getAllCrimeData", function(err, data) {
-      if (err) {
-          console.log(err);
-          return;
-      }
-      // console.log("Data", data);
+  // d3.json("/getAllCrimeData", function(err, data) {
+  //     if (err) {
+  //         console.log(err);
+  //         return;
+  //     }
+  //     // console.log("Data", data);
       
-  });
+  // });
 
-  //Get request to update map
-  var time = 18;
+  // //Get request to update map
+  // var time = 18;
 
-  $.get("/getTimeTypeCrimeData?time="+time, function(err, data){
-      if (err) {
-          // console.log(err);
-          return;
-      }
-      // console.log("Data", data);
-  });
+  // $.get("/getTimeTypeCrimeData?time="+time, function(err, data){
+  //     if (err) {
+  //         // console.log(err);
+  //         return;
+  //     }
+  //     // console.log("Data", data);
+  // });
+
+  // $.get("/getYelpData", function(err, data){
+  //     if (err) {
+  //         console.log("err",err);
+  //         return;
+  //     }
+  //     console.log("Data", data);
+  // });
 
 }) ($);

@@ -1,4 +1,5 @@
 const crime_json = require("../crime_data.json");
+const yelp_json = require("../yelp.json");
 
 exports.view = function(req, res) {
   res.render("index");
@@ -54,3 +55,9 @@ exports.getTimeBarCrimeData = function(req, res){
 	});
 	res.json(data);
 }
+
+exports.getYelpData = function (req, res) {
+ 	res.json(yelp_json);
+}
+
+
