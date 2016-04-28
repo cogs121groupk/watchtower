@@ -165,7 +165,6 @@
 
   // ASSIGNMENT PART 1B
   // Grab the delphi data from the server
-  
 
   d3.json("/getAllCrimeData", function(err, data) {
       if (err) {
@@ -173,95 +172,8 @@
           return;
       }
       console.log("Data", data);
-
-      // Define the chart
-      var xScale = d3.scale.ordinal().rangeRoundBands([0, width], 0.1);
-      var yScale = d3.scale.linear().range([height, 0]);
-
-      var chart = d3
-                    .select(".chart2")
-                    .append("svg")
-                    .attr("width", width + margin.right + margin.left)
-                    .attr("height", height + margin.top + margin.bottom)
-                    .append("g")
-                    .attr("transform", "translate(" +  margin.left + "," + margin.right + ")");
-
-      // Render the chart
-      xScale.domain(data.map(function (d){ return d.gender; }));
-
-      // TODO: Fix the yScale domain to scale with any ratings range
-      yScale.domain([0, d3.max(data, function(d) { return d.number_of_respondents; })]);
-
-      chart
-        .selectAll(".bar")
-        .data(data)
-        .enter().append("rect")
-        .attr("class", "bar")
-        .attr("x", function(d, i) { return xScale(d.gender); })
-        .attr("width", xScale.rangeBand())
-        .attr("y", function(d) { return yScale(d.number_of_respondents); })
-        .attr("height", function(d) { return height - yScale(d.number_of_respondents); });
-
-      // Orient the x and y axis
-      var xAxis = d3.svg.axis().scale(xScale).orient("bottom");
-      var yAxis = d3.svg.axis().scale(yScale).orient("left");
-
-      // TODO: Append X axis
-      chart
-        .append("g")
-        .attr("class", "xaxis axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(xAxis);
-
-
-      // TODO: Append Y axis
-      chart
-        .append("g")
-        .call(yAxis);
-
-      chart
-      .selectAll(".xaxis text")  // select all the text elements for the xaxis
-      .attr("transform", function(d) {
-         return "translate(" + this.getBBox().height*-2 + "," + (this.getBBox().height*2) + ")rotate(-45)";
-      });
       
-      
-      // //pie chart part
-      // d3.json("/getAllCrimeData", function(err, data) {
-
-      //   //var data = [10,20,50,40,70,200,2,4,8];
-      //   var r = 300;
-      //   var canvas = d3.select("body").append("svg")           .attr("width", 1500)
-      //                 .attr("height", 1500);
-      //     var color = d3.scale.category20();
-        
-      //     var group = canvas.append("g")
-      //                 .attr("transform", "translate(300,300)");
-      //     var arc = d3.svg.arc()
-      //                 .innerRadius(0)
-      //                 .outerRadius(r);
-      //     var pie = d3.layout.pie()
-      //                 .value(function(d) {return d.charge_description;});
-      //     var arcs = group.selectAll(".arc")
-      //                .data(pie(data.charge_description))
-      //                .enter()
-      //                .append("g")
-      //                .attr("class", "arc");
-
-      //     arcs.append("path")
-      //         .attr("d", arc)
-      //         .attr("fill", function(d){return color(d.)});
-
-
-      //     arcs.append("text")
-      //         .attr("transform", function(d){return "translate("+arc.centroid(d)+")";})
-      //         .attr("text-anchor","middle")
-      //         .attr("font_size","1.5em")
-      //         .attr("color", "white")
-      //         .text(function(d){return d.charge_description;});
-
-      //     });
-      //   }
+  });
 
   //Get request to update map
   var time = 18;
