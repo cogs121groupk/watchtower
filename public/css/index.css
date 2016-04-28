@@ -1,7 +1,7 @@
 body {
   background-color: #222831;
   color: #EEEEEE;
-  margin-right: 0px;
+  margin: -1% 0 0 -1%;
 }
 
 h1 {
@@ -19,6 +19,75 @@ h2 {
 p {
   color: #EEEEEE;
   font-family: 'Roboto', sans-serif;
+}
+
+.start {
+  background-image:url("../img/batman.png");
+  background-repeat: no-repeat;
+  background-position: 5% 45%;
+  width: 107%;
+  height: 100%;
+  margin-top: 0px;
+  background-color: #000000;
+  /*background-size:100%;*/
+}
+
+.startText {
+  width: 50%;
+  padding-top: 5%;
+  padding-left: 35%;
+  text-align: center;
+}
+
+.startText h1 {
+  font-size: 100px;
+}
+
+.startArrow {
+  font-family: Apple Symbols;
+  margin-left: -700px;
+  /*margin-top:250px;*/
+/*    color: #5a5a5a;*/    
+  color: white;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.start h1 {
+  color: #00ADB5;
+  font-family: 'Oswald', sans-serif;
+  font-weight: bold;
+  text-align: center;
+}
+
+
+.start p {
+  font-size: 30px;
+  color: #EEEEEE;
+  text-align: center;
+  font-family: Roboto, sans-serif; 
+}
+
+
+.startArrow img {
+  width: 8%;
+  display:block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 200px;
+   -webkit-animation: mover 1s infinite  alternate;
+    animation: mover 1s infinite  alternate;
+}
+
+
+@-webkit-keyframes mover {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-20px); }
+}
+
+@keyframes mover {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-20px); }
 }
 
 .axis {
@@ -63,7 +132,7 @@ p {
 #map{
 
   width: 92%;
-  height: 800px;
+  height: 690px;
   margin-right: 0px;
   text-align: center;
   margin: 0 auto;
@@ -89,27 +158,27 @@ p {
   color: black;
   position: absolute;
   left: 100px;
-  top: 750px;
+  top: 1275px;
   font-size: 50px;
 }
 
 #pie{
   position: absolute;
   z-index: 100;
-  right: 0px;
-  top: 440px;
+  right: 25px;
+  top: 1000px;
 
 }
 
 #legend{
   position: absolute;
   background-color: rgba(255,255,255,.7);
-  top: 90px;
-  right: 130px;
+  top: 750px;
+  right: 90px;
 }
 
 #legend div p{
-  font-size: 20px;
+  font-size: 15px;
   color:black;
   display: inline;
   text-align: center;
@@ -118,6 +187,6 @@ p {
 }
 
 #legend div img{
-  height: 25px;
-  width: 25px;
+  height: 17px;
+  width: 17px;
 }
