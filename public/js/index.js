@@ -152,32 +152,32 @@
             .attr("width", xScale.rangeBand())
             .attr("y", function(d) { return yScale(d.y1); })
             .attr("height", function(d) { return yScale(d.y0) - yScale(d.y1); })
-            .style("fill", function(d) { return color(d.type); })
-            .on("mouseover", function(d) {
-                var total_amt = d.y1 - d.y0;
-                console.log('----');
+            .style("fill", function(d) { return color(d.type); });
+            // .on("mouseover", function(d) {
+            //     var total_amt = d.y1 - d.y0;
+            //     console.log('----');
 
-                dynamicColor = this.style.fill;
-                d3.select(this)
-                  .style("fill-opacity", "0.1")
-                  .style("fill", "#EEEEEE")
-                  .append("title")
-                  // .html(total_amt);
-                  // .html('Amount: <strong>$' + that.numberWithCommas(total_amt.toFixed(2)) + '</strong>');
-                stackBarChart
-                  .append("text")
-                  .attr("id", "hoverText")
-                  .attr("x", width/2)
-                  .attr("y", height/5)
-                  .text(function(d) { return total_amt; });
-              })
-            .on("mouseout", function(d) {
-                d3.select(this)
-                  .style("fill", dynamicColor)
-                  .style("fill-opacity", "1");
-                stackBarChart
-                  .select("#hoverText").remove();
-            });
+            //     dynamicColor = this.style.fill;
+            //     d3.select(this)
+            //       .style("fill-opacity", "0.1")
+            //       .style("fill", "#EEEEEE")
+            //       .append("title");
+            //       // .html(total_amt);
+            //       // .html('Amount: <strong>$' + that.numberWithCommas(total_amt.toFixed(2)) + '</strong>');
+            //     // stackBarChart
+            //     //   .append("text")
+            //     //   .attr("id", "hoverText")
+            //     //   .attr("x", width/2)
+            //     //   .attr("y", height/5)
+            //     //   .text(function(d) { return total_amt; });
+            //   })
+            // .on("mouseout", function(d) {
+            //     d3.select(this)
+            //       .style("fill", dynamicColor)
+            //       .style("fill-opacity", "1");
+            //     // stackBarChart
+            //     //   .select("#hoverText").remove();
+            // });
 
             var legend = stackBarChart.selectAll(".legend")
                 .data(color.domain().slice().reverse())
