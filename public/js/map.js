@@ -382,7 +382,7 @@ $("#slider").slider({
     for (var i = 0; i <= vals; i++) {
 
         // Create a new element and position it with percentages
-        var el = $('<label style = "position: absolute">' + times[i] + '</label>').css('left', (i/vals*100) + '%');
+        var el = $('<label style = "position: absolute">' + (i + opt.min) + '</label>').css('left', (i/vals*100) + '%');
 
         // Add the element inside #slider
         $("#slider").append(el);
