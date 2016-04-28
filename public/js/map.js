@@ -63,25 +63,51 @@ for (var x = -100; x < 140; x += 6) {
 //map.addLayer(myLayer);
 
 
-map.on('move', function() {
+map.on('moveend', function() {
 
-    // Construct an empty list to fill with onscreen markers.
+   // Construct an empty list to fill with onscreen markers.
     var inBounds = [],
     // Get the map bounds - the top-left and bottom-right locations.
     bounds = map.getBounds();
 
+    var crimes = {};
+
+    var crimes2 = [];
+
     // For each marker, consider whether it is currently visible by comparing
     // with the current map bounds.
     activeLayer.eachLayer(function(marker) {
-        if (bounds.contains(marker.getLatLng()) && inBounds.length < 60) {
-            inBounds.push(marker.options.title);
+         if (bounds.contains(marker.getLatLng())) {
+            if(!(marker.options.title in crimes)){
+                crimes[marker.options.title] = 1;
+            }else{
+                crimes[marker.options.title]++;
+            }
         }
     });
+
+    for(var key in crimes){
+
+        var a = {
+            label: key,
+            value: crimes[key]
+        }
+
+        crimes2.push(a);
+    }
+
+     pie.updateProp("data.content", crimes2);
 });
 
 var times = ["12am","1am","2am","3am","4am","5am","6am","7am","8am","9am","10am","11am","12pm","1pm","2pm","3pm","4pm","5pm","6pm","7pm","8pm","9pm","10pm","11pm"];
 
 $("#something").text(times[0]);
+
+var crimes = {};
+
+var crimes2 = [];
+
+var pie;
 
 //get initial (midnight) crime data
 $.get("/getTimeCrimeData?time=0", function(response){
@@ -151,6 +177,90 @@ $.get("/getTimeCrimeData?time=0", function(response){
     }
 
     map.addLayer(myLayer);
+
+    myLayer.eachLayer(function(marker) {
+         if (bounds.contains(marker.getLatLng())) {
+            if(!(marker.options.title in crimes)){
+                crimes[marker.options.title] = 1;
+            }else{
+                crimes[marker.options.title]++;
+            }
+        }
+    });
+
+    for(var key in crimes){
+
+        var a = {
+            label: key,
+            value: crimes[key]
+        }
+
+        crimes2.push(a);
+    }
+
+    pie = new d3pie("pie", {
+
+        "size": {
+
+          "canvasHeight": 500,
+
+          "canvasWidth":500
+
+        },
+
+        "data": {
+
+          "content": crimes2
+
+        },
+        "labels":{
+
+            "outer": {
+                "format": "none",
+                "pieDistance": 32
+                },
+            "inner": {
+                "hideWhenLessThanPercentage": 3
+            },
+            "mainLabel": {
+                "fontSize": 15,
+                "color": "white"
+            },
+            "percentage": {
+                "color": "#ffffff",
+                "decimalPlaces": 0,
+                "fontSize": 20
+            },
+            "value": {
+                "color": "white",
+                "fontSize": 10
+            },
+            "lines": {
+                "enabled": false
+            },
+            "truncation": {
+                "enabled": true
+            }
+        },
+        "effects": {
+            "load": {
+                "effect": "none"
+            },
+            "pullOutSegmentOnClick": {
+                "effect": "linear",
+                "speed": 400,
+                "size": 8
+            }
+        },
+        "tooltips": {
+            "enabled": true,
+            "type": "placeholder",
+            "string": "{label}: {value}",
+            "styles": {
+                "fontSize": 22
+            }
+        },
+    });
 });
 
 $("#slider").slider({
@@ -259,11 +369,32 @@ $("#slider").slider({
         // Get the map bounds - the top-left and bottom-right locations.
         bounds = map.getBounds();
 
+        var crimes = {};
+
+        var crimes2 = [];
+
         // For each marker, consider whether it is currently visible by comparing
         // with the current map bounds.
         activeLayer.eachLayer(function(marker) {
-
+             if (bounds.contains(marker.getLatLng())) {
+                if(!(marker.options.title in crimes)){
+                    crimes[marker.options.title] = 1;
+                }else{
+                    crimes[marker.options.title]++;
+                }
+            }
         });
-       
+
+        for(var key in crimes){
+
+            var a = {
+                label: key,
+                value: crimes[key]
+            }
+
+            crimes2.push(a);
+        }
+
+         pie.updateProp("data.content", crimes2);
     }
 });
