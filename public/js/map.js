@@ -1,8 +1,8 @@
 L.mapbox.accessToken = 'pk.eyJ1IjoiYmVlcnllMjgiLCJhIjoiY2lob2owdHFuMHVlcXRjbHppYjk3bnVtMyJ9.c9O7alSJC22CPlwNuiWOOw';
 
 
-var southWest = L.latLng(32.456643, -117.520223),
-    northEast = L.latLng(33.433788, -116.309333),
+var southWest = L.latLng(32.476625, -117.700736),
+    northEast = L.latLng(33.840018, -116.169991),
     bounds = L.latLngBounds(southWest, northEast);
 
 
@@ -17,7 +17,9 @@ var map = L.mapbox.map('map', 'mapbox.streets', {
 
 
 
-var myLayer = new L.MarkerClusterGroup();
+var myLayer = new L.MarkerClusterGroup({
+    disableClusteringAtZoom: 14 
+});
 
 //var myLayer0 = new L.MarkerClusterGroup();
 
@@ -75,10 +77,6 @@ map.on('move', function() {
             inBounds.push(marker.options.title);
         }
     });
-    // Display a list of markers.
-    document.getElementById('coordinates').innerHTML = inBounds.join('\n');
-
-
 });
 
 var times = ["12am","1am","2am","3am","4am","5am","6am","7am","8am","9am","10am","11am","12pm","1pm","2pm","3pm","4pm","5pm","6pm","7pm","8pm","9pm","10pm","11pm"];
@@ -90,9 +88,61 @@ $.get("/getTimeCrimeData?time=0", function(response){
 
     for(var i = 0; i < response.length; i++){
 
-        var marker = L.marker(new L.LatLng(response[i].lat, response[i].lng), {
+        var marker;
 
-            icon: L.mapbox.marker.icon({'marker-symbol': 'post', 'marker-color': '0044FF'}),
+        var icon; 
+
+        switch(response[i].charge_description){
+            case "Assault":
+               icon = "../img/assault.png";
+               break;
+            case "Arson": 
+                icon = "../img/arson.png";
+                break;
+            case "Child Abuse": 
+                icon = "../img/child_abuse.png";
+                break;
+            case "DUI":
+                icon = "../img/dui.png";
+                break;
+            case "Elder Abuse":
+                icon = "../img/elder_abuse.png";
+                break;
+            case "Drunk in Public":
+                icon = "../img/intox.png";
+                break;
+            case "Loitering":
+                icon = "../img/loitering.png";
+                break;
+            case "Murder": 
+                icon = "../img/murder.png";
+                break;
+            case "Rape": 
+                icon = "../img/sex_assault.png";
+                break;
+            case "Possession of Substance":
+                icon = "../img/substance.png";
+                break;
+            case "Theft":
+                icon = "../img/theft.png";
+                break;
+            case "Vandalism": 
+                icon = "../img/vandalism.png";
+                break;
+            case "Possession of Weapon":
+                icon = "../img/weapon.png";
+                break;
+            default:
+                icon = "../img/question.png";
+        }
+
+        marker = L.marker(new L.LatLng(response[i].lat, response[i].lng), {
+
+            icon: L.icon({
+                iconUrl: icon,
+                iconSize: [35, 35],
+                iconAnchor: [17, 34]
+            }),
             title: response[i].charge_description
         });
 
@@ -115,17 +165,69 @@ $("#slider").slider({
         //switch the active layer when slider slides
         $("#something").text(times[ui.value]); 
 
-        myLayer.eachLayer(function(marker) {
-            myLayer.removeLayer(marker);
-        });
-
         $.get("/getTimeCrimeData?time="+ui.value, function(response){
+
+            myLayer.eachLayer(function(marker) {
+                myLayer.removeLayer(marker);
+            });
 
             for(var i = 0; i < response.length; i++){
 
-                var marker = L.marker(new L.LatLng(response[i].lat, response[i].lng), {
+                var marker;
 
-                    icon: L.mapbox.marker.icon({'marker-symbol': 'post', 'marker-color': '0044FF'}),
+                var icon; 
+
+                switch(response[i].charge_description){
+                    case "Assault":
+                       icon = "../img/assault.png";
+                       break;
+                    case "Arson": 
+                        icon = "../img/arson.png";
+                        break;
+                    case "Child Abuse": 
+                        icon = "../img/child_abuse.png";
+                        break;
+                    case "DUI":
+                        icon = "../img/dui.png";
+                        break;
+                    case "Elder Abuse":
+                        icon = "../img/elder_abuse.png";
+                        break;
+                    case "Drunk in Public":
+                        icon = "../img/intox.png";
+                        break;
+                    case "Loitering":
+                        icon = "../img/loitering.png";
+                        break;
+                    case "Murder": 
+                        icon = "../img/murder.png";
+                        break;
+                    case "Rape": 
+                        icon = "../img/sex_assault.png";
+                        break;
+                    case "Possession of Substance":
+                        icon = "../img/substance.png";
+                        break;
+                    case "Theft":
+                        icon = "../img/theft.png";
+                        break;
+                    case "Vandalism": 
+                        icon = "../img/vandalism.png";
+                        break;
+                    case "Possession of Weapon":
+                        icon = "../img/weapon.png";
+                        break;
+                    default:
+                        icon = "../img/question.png";
+                }
+
+                marker = L.marker(new L.LatLng(response[i].lat, response[i].lng), {
+
+                    icon: L.icon({
+                        iconUrl: icon,
+                        iconSize: [35, 35],
+                        iconAnchor: [17, 34]
+                    }),
                     title: response[i].charge_description
                 });
 
@@ -160,11 +262,8 @@ $("#slider").slider({
         // For each marker, consider whether it is currently visible by comparing
         // with the current map bounds.
         activeLayer.eachLayer(function(marker) {
-            if (bounds.contains(marker.getLatLng()) && inBounds.length < 60) {
-                inBounds.push(marker.options.title);
-            }
+
         });
-        // Display a list of markers.
-        document.getElementById('coordinates').innerHTML = inBounds.join('\n');
+       
     }
 });
