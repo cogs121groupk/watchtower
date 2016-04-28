@@ -16,12 +16,17 @@ TASKS
 
 SIX DESIGN PRINCIPLES
 
-1. Discoverability/Signifiers 
-2. Learnability 
-3. Feedback 
-4. Natural Mapping/Mental Metaphors 
-5. Constraints - 
-6. Error Prevention/Recovery - lock the map to only show San Diego versus scrolling through the world
+1. Discoverability/Signifiers - points of applications that users are interested in is time and specific crime. Users could slide the time bar to find the certain time period that they are looking for. 
+
+2. Learnability - The application is easily operated for users.
+	
+3. Feedback - if users zoom in the map, it will show precise icons which represent the type of crime and the density of it as well as the pie bar which shows the precentage of different type of crime.
+
+4. Natural Mapping/Mental Metaphors - we have icons on the map to represent the type of crime, such as crying baby represent child abuse. 
+
+5. Constraints - The map is locked to only show San Diego versus scrolling through the world
+
+6. Error Prevention/Recovery - 
 
 CSS Design Decision
 

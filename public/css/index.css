@@ -1,6 +1,7 @@
 body {
   background-color: #222831;
   color: #EEEEEE;
+  margin-right: 0px;
 }
 
 h1 {
@@ -56,9 +57,17 @@ h2 {
 
 #map{
 
-  width: 95%;
+  width: 92%;
   height: 800px;
   margin-right: 0px;
+  text-align: center;
+  margin: 0 auto;
+
+}
+
+#slider{
+  width: 92%;
+  margin: 0 auto;
 }
 
 #coordinates{
@@ -71,4 +80,12 @@ h2 {
 
 #something{
   text-align: center;
+}
+
+#pie{
+  position: absolute;
+  z-index: 100;
+  right: 0px;
+  top: 440px;
+
 }
