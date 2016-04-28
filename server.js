@@ -47,6 +47,7 @@ app.get('/', router.index.view);
 app.get('/getAllCrimeData', router.index.getAllCrimeData);
 app.get('/getTimeCrimeData', router.index.getTimeCrimeData);
 app.get('/getTimeTypeCrimeData', router.index.getTimeTypeCrimeData);
+app.get('/getYelpData', router.index.getYelpData);
 
 http.createServer(app).listen(app.get('port'), function() {
     console.log('Express server listening on port ' + app.get('port'));
