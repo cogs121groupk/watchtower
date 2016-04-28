@@ -21,7 +21,7 @@
           console.log("Data", data);
 
           var margin = {top: 20, right: 10, bottom: 100, left: 60},
-              width = 740 - margin.right - margin.left, // Originally 960
+              width = 960 - margin.right - margin.left, // Originally 960
               height = 500 - margin.top - margin.bottom;
 
           var innerWidth  = width  - margin.left - margin.right;
@@ -36,6 +36,7 @@
           var stackBarChart = d3
             .select("#stackBarChart")
             .append("svg")
+            .attr("viewBox", "0 0 1080 500")
             .attr("width", width + margin.right + margin.left)
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
@@ -167,6 +168,24 @@
                   .select("#hoverText").remove();
             });
 
+            var legend = stackBarChart.selectAll(".legend")
+                .data(color.domain().slice().reverse())
+              .enter().append("g")
+                .attr("class", "legend")
+                .attr("transform", function(d, i) { return "translate(55," + i * 20 + ")"; });
+
+            legend.append("rect")
+                .attr("x", width - 18)
+                .attr("width", 18)
+                .attr("height", 18)
+                .style("fill", color);
+
+            legend.append("text")
+                .attr("x", width - 24)
+                .attr("y", 9)
+                .attr("dy", ".35em")
+                .style("text-anchor", "end")
+                .text(function(d) { return d; });
     });
 
 

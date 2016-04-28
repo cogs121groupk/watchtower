@@ -41,7 +41,7 @@ exports.getTimeTypeCrimeData = function(req, res){
 exports.getTimeBarCrimeData = function(req, res){
 	var time = req.query.time;
 	var data = {};
-	data["time"] = hour;
+	data["hour"] = time;
 	crime_json.forEach(function(crime){
 		var date = new Date(crime.activity_date);
 		if(date.getHours() == time){

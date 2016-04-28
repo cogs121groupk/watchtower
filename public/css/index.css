@@ -38,6 +38,12 @@ h2 {
   fill: #EEEEEE;
 }
 
+.legend text {
+  font-family: 'Roboto', sans-serif;
+  fill: #EEEEEE;
+  font-size: 0.8em;
+}
+
 .chart2 {
   display: block;
   margin-left: auto;
