@@ -16,6 +16,10 @@ h2 {
   font-weight: bold;
 }
 
+p {
+  color: #EEEEEE;
+  font-family: 'Roboto', sans-serif;
+}
 .start {
   background-image:url("../img/batman.png");
   background-repeat: no-repeat;
