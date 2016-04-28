@@ -1,7 +1,21 @@
 L.mapbox.accessToken = 'pk.eyJ1IjoiYmVlcnllMjgiLCJhIjoiY2lob2owdHFuMHVlcXRjbHppYjk3bnVtMyJ9.c9O7alSJC22CPlwNuiWOOw';
-var map = L.mapbox.map('map', 'mapbox.streets');
+
+
+var southWest = L.latLng(32.456643, -117.520223),
+    northEast = L.latLng(33.433788, -116.309333),
+    bounds = L.latLngBounds(southWest, northEast);
+
+
+var map = L.mapbox.map('map', 'mapbox.streets', {
+
+   maxBounds: bounds,
+   maxZoom: 20,
+   minZoom: 9
+});
 //var myLayer = L.mapbox.featureLayer().addTo(map);
 //var myLayer0 = L.mapbox.featureLayer();
+
+
 
 var myLayer = new L.MarkerClusterGroup();
 
