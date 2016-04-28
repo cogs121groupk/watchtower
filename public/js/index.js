@@ -17,17 +17,28 @@
       promises.push(getHourData(i, data));
     }
 
+    function compare(a,b) {
+      if (Number(a.hour) < Number(b.hour))
+        return -1;
+      else if (Number(a.hour) > Number(b.hour))
+        return 1;
+      else 
+        return 0;
+    }
+
     Promise.all(promises).then(function(){
           console.log("Data", data);
 
-          var margin = {top: 20, right: 10, bottom: 100, left: 60},
-              width = 960 - margin.right - margin.left, // Originally 960
-              height = 500 - margin.top - margin.bottom;
+          data.sort(compare);
+
+          var margin = {top: 20, right: 80, bottom: 100, left: 50},
+              width = 900 - margin.right - margin.left, // Originally 960
+              height = 550 - margin.top - margin.bottom;
 
           var innerWidth  = width  - margin.left - margin.right;
           var innerHeight = height - margin.top  - margin.bottom;
 
-          var xScale = d3.scale.ordinal().rangeRoundBands([0, width], 0.65);
+          var xScale = d3.scale.ordinal().rangeRoundBands([0, width], 0.6);
           var yScale = d3.scale.linear().range([height, 0]);
           // var color = d3.scale.ordinal()
             // .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
@@ -36,7 +47,7 @@
           var stackBarChart = d3
             .select("#stackBarChart")
             .append("svg")
-            .attr("viewBox", "0 0 1080 500")
+            .attr("viewBox", "0 0 980 550")
             .attr("width", width + margin.right + margin.left)
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
@@ -175,13 +186,13 @@
                 .attr("transform", function(d, i) { return "translate(55," + i * 20 + ")"; });
 
             legend.append("rect")
-                .attr("x", width - 18)
+                .attr("x", width + 87)
                 .attr("width", 18)
                 .attr("height", 18)
                 .style("fill", color);
 
             legend.append("text")
-                .attr("x", width - 24)
+                .attr("x", width + 83)
                 .attr("y", 9)
                 .attr("dy", ".35em")
                 .style("text-anchor", "end")
