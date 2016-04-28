@@ -6,21 +6,26 @@ body {
 
 h1 {
   color: #00ADB5;
-  font-family: 'Lato', sans-serif;
+  font-family: 'Oswald', sans-serif;
   font-weight: bold;
 }
 
 h2 {
   color: #00ADB5;
-  font-family: 'Lato', sans-serif;
+  font-family: 'Oswald', sans-serif;
   font-weight: bold;
 }
 
 .axis {
   font-family: 'Roboto', sans-serif;
   font-size: 0.8em;
-  stroke: none;
+  stroke: #EEEEEE;
   fill: #EEEEEE;
+  shape-rendering: crispEdges;
+}
+
+.xaxis path {
+  display: none;
 }
 
 #stackBarChart {
@@ -32,6 +37,12 @@ h2 {
 #stackBarChart #hoverText {
   font-family: 'Roboto', sans-serif;
   fill: #EEEEEE;
+}
+
+.legend text {
+  font-family: 'Roboto', sans-serif;
+  fill: #EEEEEE;
+  font-size: 0.8em;
 }
 
 .chart2 {
@@ -57,6 +68,8 @@ h2 {
 #slider{
   width: 92%;
   margin: 0 auto;
+  height: 20px;
+  z-index: 101;
 }
 
 #coordinates{
@@ -68,7 +81,11 @@ h2 {
 }
 
 #something{
-  text-align: center;
+  color: black;
+  position: absolute;
+  left: 100px;
+  top: 750px;
+  font-size: 50px;
 }
 
 #pie{
@@ -77,4 +94,25 @@ h2 {
   right: 0px;
   top: 440px;
 
+}
+
+#legend{
+  position: absolute;
+  background-color: rgba(255,255,255,.7);
+  top: 90px;
+  right: 130px;
+}
+
+#legend div p{
+  font-size: 20px;
+  color:black;
+  display: inline;
+  text-align: center;
+  vertical-align: center;
+  margin-left: 5px;
+}
+
+#legend div img{
+  height: 25px;
+  width: 25px;
 }
