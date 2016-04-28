@@ -36,3 +36,21 @@ exports.getTimeTypeCrimeData = function(req, res){
 	});
 	res.json(data);
 }
+
+// return an array with the count of categories based on the time with hour
+exports.getTimeBarCrimeData = function(req, res){
+	var time = req.query.time;
+	var data = {};
+	data["time"] = hour;
+	crime_json.forEach(function(crime){
+		var date = new Date(crime.activity_date);
+		if(date.getHours() == time){
+			if(!( crime.charge_description in data)){
+				data[crime.charge_description] = 1;
+			}else{
+				data[crime.charge_description]++;
+			}
+		}
+	});
+	res.json(data);
+}
