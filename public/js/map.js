@@ -238,6 +238,84 @@ $("#slider").slider({
             map.addLayer(myLayer);
         });
 
+            var values = [];
+            var r = 300;
+            var canvas = d3.select("body").append("svg")           
+                          .attr("width", 1500)
+                          .attr("height", 1500);
+              var color = d3.scale.category20();
+            
+              var group = canvas.append("g")
+                          .attr("transform", "translate(300,300)");
+              var arc = d3.svg.arc()
+                          .innerRadius(0)
+                          .outerRadius(r);
+              var pie = d3.layout.pie()
+                          .value(function(d) {return d;});
+              var arcs = group.selectAll(".arc")
+                         .data(pie(values))
+                         .enter()
+                         .append("g")
+                         .attr("class", "arc");
+               arcs.append("path")
+                  .attr("d", arc)
+                  .attr("fill", function(d){console.log(d);return color(d.values)});
+
+        //pie chart part
+
+        $.get("/getTimeTypeCrimeData?time="+ui.value, function(data) {
+            console.log("pie");
+            
+            var keys = [];
+            for (var key in data){
+                if(data.hasOwnProperty(key)){
+                    keys.push(key);
+                }
+            }
+            //pass values array into pie
+          //  var values = [];
+            keys.forEach(function(key){
+                values.push(data[key]);
+            });
+
+            console.log("vals"+values);
+
+            
+            // var r = 300;
+            // var canvas = d3.select("body").append("svg")           
+            //               .attr("width", 1500)
+            //               .attr("height", 1500);
+            //   var color = d3.scale.category20();
+            
+            //   var group = canvas.append("g")
+            //               .attr("transform", "translate(300,300)");
+            //   var arc = d3.svg.arc()
+            //               .innerRadius(0)
+            //               .outerRadius(r);
+            //   var pie = d3.layout.pie()
+            //               .value(function(d) {return d;});
+              var arcs = group.selectAll(".arc")
+                         .data(pie(values))
+                         .enter()
+                         .append("g")
+                         .attr("class", "arc");
+
+              arcs.append("path")
+                  .attr("d", arc)
+                  .attr("fill", function(d){console.log(d);return color(d.values)});
+
+
+
+              arcs.append("text")
+                  .attr("transform", function(d){return "translate("+arc.centroid(d)+")";})
+                  .attr("text-anchor","middle")
+                  .attr("font_size","1.5em")
+                  .attr("color", "white")
+                  .text(function(d){console.log(d);return d.keys;});
+
+          });
+        
+
         map.addLayer(myLayer);
 
         /*
